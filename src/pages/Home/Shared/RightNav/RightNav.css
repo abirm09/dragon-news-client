@@ -1,0 +1,6 @@
+.right-side-bottom {
+  background-color: #05001d;
+  background-image: url(../../../../assets/bg1.png),
+    linear-gradient(90deg, #fff, #2b2b2b);
+  background-blend-mode: overlay;
+}
