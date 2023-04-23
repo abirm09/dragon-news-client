@@ -20,7 +20,7 @@ const LeftNav = () => {
           <p key={category.id}>
             <NavLink
               className="text-decoration-none fw-bold text-secondary"
-              to={`category/${category.id}`}
+              to={`/category/${category.id}`}
             >
               {category.name}
             </NavLink>

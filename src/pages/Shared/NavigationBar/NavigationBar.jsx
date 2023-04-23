@@ -1,10 +1,11 @@
 import React, { useContext } from "react";
 import { Button, Container, Nav, Navbar } from "react-bootstrap";
 import { FaUserCircle } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../Provider/AuthProvider";
 
 const NavigationBar = () => {
+  const navigate = useNavigate();
   const { user } = useContext(AuthContext);
   return (
     <div>
@@ -21,13 +22,20 @@ const NavigationBar = () => {
             </Nav>
             <Nav>
               <div className="d-flex align-items-center ">
-                <button className="btn">
-                  <FaUserCircle className="fs-2"></FaUserCircle>
-                </button>
                 {user ? (
-                  <Button variant="secondary">Log out</Button>
+                  <>
+                    <button className="btn">
+                      <FaUserCircle className="fs-2"></FaUserCircle>
+                    </button>
+                    <Button variant="secondary">Log out</Button>
+                  </>
                 ) : (
-                  <Button variant="secondary">Login</Button>
+                  <Button
+                    variant="secondary"
+                    onClick={() => navigate("/login")}
+                  >
+                    Login
+                  </Button>
                 )}
               </div>
             </Nav>
