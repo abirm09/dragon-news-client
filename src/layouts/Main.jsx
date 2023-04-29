@@ -1,14 +1,17 @@
 import React, { useEffect } from "react";
 import { Col, Container, Row } from "react-bootstrap";
-import Category from "../pages/Home/category/Category";
 import Footer from "../pages/Shared/Footer/Footer";
 import Header from "../pages/Shared/Header/Header";
 import LeftNav from "../pages/Shared/LeftNav/LeftNav";
 import RightNav from "../pages/Shared/RightNav/RightNav";
 import { Outlet, useLocation } from "react-router-dom";
 import NavigationBar from "../pages/Shared/NavigationBar/NavigationBar";
+import { useContext } from "react";
+import { AuthContext } from "../Provider/AuthProvider";
+import Loading from "../pages/Shared/Loading/Loading";
 const Main = () => {
   const location = useLocation();
+  const { loading } = useContext(AuthContext);
   useEffect(() => {
     if (location.pathname == "/") {
       document.title = `Dragon news | Home`;
@@ -18,6 +21,9 @@ const Main = () => {
       }`;
     }
   }, [location]);
+  if (loading) {
+    return <Loading />;
+  }
   return (
     <>
       <Header />

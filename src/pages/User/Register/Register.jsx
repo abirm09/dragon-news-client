@@ -2,11 +2,38 @@ import React from "react";
 import NavigationBar from "../../Shared/NavigationBar/NavigationBar";
 import { Button, Container, Form } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "../../../Provider/AuthProvider";
+import { updateProfile } from "firebase/auth";
+import { useState } from "react";
 
 const Register = () => {
+  const { createUser } = useContext(AuthContext);
+  const [accepted, setAccepted] = useState(false);
+  const handleSubmit = event => {
+    event.preventDefault();
+    const form = event.target;
+    const name = form.name.value;
+    const photoUrl = form.photoUrl.value;
+    const email = form.email.value;
+    const password = form.password.value;
+    createUser(email, password)
+      .then(result => {
+        sendUserData(result.user, name, photoUrl);
+      })
+      .catch(err => console.log(err));
+  };
+  const sendUserData = (user, name, photoUrl) => {
+    updateProfile(user, {
+      displayName: name,
+      photoURL: photoUrl,
+    });
+  };
+  const handleCheck = event => {
+    setAccepted(event.target.checked);
+  };
   return (
     <>
-      <NavigationBar></NavigationBar>
       <div className="bg-light min-vh-100">
         <Container>
           <div className=" d-flex justify-content-center">
@@ -15,13 +42,13 @@ const Register = () => {
                 Register your account
               </h3>
               <hr className="pb-3" />
-              <Form className="w-100 ">
+              <Form className="w-100" onSubmit={handleSubmit}>
                 <Form.Group className="mb-3" controlId="formName">
                   <Form.Label>Full name</Form.Label>
                   <Form.Control
                     type="text"
                     placeholder="Enter Name"
-                    name="name "
+                    name="name"
                     className="py-2"
                   />
                 </Form.Group>
@@ -30,7 +57,7 @@ const Register = () => {
                   <Form.Control
                     type="text"
                     placeholder="Photo URL"
-                    name="photoUrl "
+                    name="photoUrl"
                     className="py-2"
                   />
                 </Form.Group>
@@ -39,7 +66,7 @@ const Register = () => {
                   <Form.Control
                     type="email"
                     placeholder="Enter email"
-                    name="email "
+                    name="email"
                     className="py-2"
                   />
                 </Form.Group>
@@ -54,10 +81,20 @@ const Register = () => {
                 </Form.Group>
                 <Form.Check
                   id="terms"
-                  label="Accept terms and conditions"
+                  onClick={handleCheck}
+                  label={
+                    <>
+                      Accept <Link to="/terms">Terms & conditions</Link>
+                    </>
+                  }
                   className="user-select-none"
                 ></Form.Check>
-                <Button variant="secondary" className="w-100 py-2">
+                <Button
+                  type="submit"
+                  variant="secondary"
+                  className="w-100 py-2"
+                  disabled={!accepted}
+                >
                   Register
                 </Button>
               </Form>
