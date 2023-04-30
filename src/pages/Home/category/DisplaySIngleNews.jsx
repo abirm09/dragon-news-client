@@ -65,8 +65,13 @@ const DisplaySIngleNews = ({ data }) => {
       </Card.Body>
       <Card.Footer className="text-muted border-0">
         <div className="d-flex justify-content-between">
-          <div>
-            <Rating style={{ maxWidth: 100 }} value={rating.number} readOnly />
+          <div className="d-flex gap-2">
+            <Rating
+              style={{ maxWidth: 100 }}
+              value={Math.round(rating.number) || 0}
+              readOnly
+            />
+            <span>{rating?.number}</span>
           </div>
           <div>
             <FaEye />
